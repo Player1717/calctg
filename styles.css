@@ -12,7 +12,7 @@ body {
 .tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 1px;
 }
 
 .tablink {
@@ -24,6 +24,7 @@ body {
     border: none;
     outline: none;
     transition: background-color 0.3s;
+	border-radius: 15px 15px 1px 1px;
 }
 
 .tablink:hover {
@@ -33,7 +34,7 @@ body {
 .tabcontent {
     display: none;
     width: 100%;
-    max-width: 900px;
+    max-width: 750px;
 }
 
 .large .container {
