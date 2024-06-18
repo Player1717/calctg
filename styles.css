@@ -334,7 +334,7 @@ th, td {
 @media (max-width: 768px) {
     body {
         height: 100vh;
-        padding: 10px;
+        padding: 5px;
         overflow: hidden; /* Убираем прокрутку */
         display: flex;
         justify-content: center;
@@ -344,14 +344,15 @@ th, td {
 
     .tabs {
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
     }
 
     .tablink {
         flex: 1 1 auto;
-        margin: 5px 0;
+        margin: 5px 2px;
         width: auto;
+        font-size: 0.8rem; /* Уменьшение шрифта */
     }
 
     .tabcontent {
@@ -374,7 +375,7 @@ th, td {
     .input-section, .output-section {
         width: 100%;
         margin-left: 0;
-        margin-bottom: 10px; /* Уменьшаем отступ */
+        margin-bottom: 5px; /* Уменьшаем отступ */
         flex: 1; /* Распределяем пространство равномерно */
     }
 
@@ -385,7 +386,7 @@ th, td {
     }
 
     .apply-button, .payment-schedule-button {
-        font-size: 1rem;
+        font-size: 0.8rem; /* Уменьшение шрифта */
         padding: 10px; /* Уменьшаем padding */
     }
 
@@ -422,3 +423,4 @@ th, td {
         padding: 3px 5px;
     }
 }
+
