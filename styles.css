@@ -334,12 +334,14 @@ th, td {
 @media (max-width: 768px) {
     body {
         height: 100vh;
-        padding: 5px;
+        padding: 10px;
         overflow: hidden; /* Убираем прокрутку */
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        transform: scale(0.85); /* Масштабируем содержимое */
+        transform-origin: top left; /* Устанавливаем точку масштабирования */
     }
 
     .tabs {
@@ -423,4 +425,5 @@ th, td {
         padding: 3px 5px;
     }
 }
+
 
