@@ -336,6 +336,9 @@ th, td {
         height: 100vh;
         padding: 10px;
         overflow: hidden; /* Убираем прокрутку */
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .tabs {
@@ -372,35 +375,41 @@ th, td {
     }
 
     .apply-button, .payment-schedule-button {
-        font-size: 1.2rem;
+        font-size: 1rem;
         padding: 10px; /* Уменьшаем padding */
     }
 
     .monthly-payment h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     #monthly-payment,
     #car-monthly-payment {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     .additional-info p {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
 
     .info-field {
-        font-size: 1rem;
-        padding: 10px;
+        font-size: 0.8rem;
+        padding: 5px;
         width: 100%; /* Обеспечиваем полную ширину */
     }
 
     .input-group input[type="number"] {
-        font-size: 1rem;
-        padding: 10px;
+        font-size: 0.8rem;
+        padding: 5px;
     }
 
     .input-group label {
-        font-size: 1rem;
+        font-size: 0.8rem;
+    }
+
+    .loan-term-options span {
+        font-size: 0.7rem;
+        padding: 3px 5px;
     }
 }
+
