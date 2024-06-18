@@ -333,8 +333,9 @@ th, td {
 /* Медиазапросы для мобильных устройств */
 @media (max-width: 768px) {
     body {
-        height: auto;
+        height: 100vh;
         padding: 10px;
+        overflow: hidden; /* Убираем прокрутку */
     }
 
     .tabs {
@@ -354,17 +355,25 @@ th, td {
     .calculator {
         flex-direction: column;
         align-items: center;
+        height: 100%; /* Устанавливаем высоту в 100% */
     }
 
     .input-section, .output-section {
         width: 100%;
         margin-left: 0;
-        margin-bottom: 20px;
+        margin-bottom: 10px; /* Уменьшаем отступ */
+        flex: 1; /* Распределяем пространство равномерно */
+    }
+
+    .output-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .apply-button, .payment-schedule-button {
         font-size: 1.2rem;
-        padding: 15px;
+        padding: 10px; /* Уменьшаем padding */
     }
 
     .monthly-payment h2 {
@@ -383,7 +392,7 @@ th, td {
     .info-field {
         font-size: 1rem;
         padding: 10px;
-        width: 100%;  /* Ensure full width */
+        width: 100%; /* Обеспечиваем полную ширину */
     }
 
     .input-group input[type="number"] {
@@ -395,4 +404,3 @@ th, td {
         font-size: 1rem;
     }
 }
-
