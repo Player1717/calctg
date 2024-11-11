@@ -1,0 +1,26 @@
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Промокоды</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Выберите магазин:</h1>
+    <div id="stores">
+        <button onclick="showPromoCodes('yandex')">Яндекс Маркет</button>
+        <button onclick="showPromoCodes('mega')">Мега Маркет</button>
+        <button onclick="showPromoCodes('ozon')">OZON</button>
+    </div>
+
+    <div id="promocodes" style="display: none;">
+        <h2 id="store-title"></h2>
+        <ul id="promocode-list"></ul>
+        <button onclick="goBack()">Назад</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
