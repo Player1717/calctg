@@ -2,84 +2,64 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Кредитный калькулятор</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Калькулятор</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Вкладки -->
+    <div class="calculator">
         <div class="tabs">
-            <button class="tablink active">Автокредит</button>
-            <button class="tablink">Кредит наличными</button>
+            <button>Автокредит</button>
+            <button>Кредит наличными</button>
         </div>
 
-        <!-- Калькулятор -->
-        <div class="calculator">
-            <!-- Поля ввода -->
-            <div class="input-section">
-                <div class="input-group">
-                    <label for="car-price">Стоимость авто</label>
-                    <input type="number" id="car-price" value="1000000">
-                </div>
-                <div class="input-group">
-                    <label for="down-payment">Первоначальный взнос</label>
-                    <input type="number" id="down-payment" value="200000">
-                </div>
-                <div class="input-group">
-                    <label>Срок кредита (мес)</label>
-                    <div class="term-buttons">
-                        <button>12</button>
-                        <button>24</button>
-                        <button>36</button>
-                        <button>48</button>
-                        <button>60</button>
-                        <button>72</button>
-                        <button>84</button>
-                        <button>96</button>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="insurance">КАСКО</label>
-                    <input type="number" id="insurance" value="50000">
-                    <div class="inline-checkbox">
-                        <input type="checkbox" id="credit-insurance">
-                        <label for="credit-insurance">в кредит</label>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="services">Дополнительные сервисы</label>
-                    <input type="number" id="services" value="10000">
-                    <div class="inline-checkbox">
-                        <input type="checkbox" id="credit-services">
-                        <label for="credit-services">в кредит</label>
-                    </div>
-                </div>
+        <div class="form">
+            <label for="auto-price">Стоимость авто</label>
+            <input id="auto-price" type="number" value="1000000">
+
+            <label for="down-payment">Первоначальный взнос</label>
+            <input id="down-payment" type="number" value="200000">
+
+            <label>Срок кредита (мес)</label>
+            <div class="credit-term-buttons">
+                <button value="12">12</button>
+                <button value="24">24</button>
+                <button value="36">36</button>
+                <button value="48">48</button>
+                <button value="60">60</button>
+                <button value="72">72</button>
+                <button value="84">84</button>
+                <button value="96">96</button>
             </div>
 
-            <!-- Результаты -->
-            <div class="output-section">
-                <h2>Ежемесячный платёж</h2>
-                <div class="result">20 710 ₽</div>
-                <div class="rate-group">
-                    <label for="rate">Ставка</label>
-                    <input type="number" id="rate" value="8.9">
-                </div>
+            <label for="insurance">КАСКО</label>
+            <input id="insurance" type="number" value="50000">
+
+            <label for="extra-services">Дополнительные сервисы</label>
+            <input id="extra-services" type="number" value="10000">
+        </div>
+
+        <div class="result-block">
+            <h2>Ежемесячный платеж</h2>
+            <p class="monthly-payment">20 710 ₽</p>
+
+            <div class="rate-input-wrapper">
+                <span>Ставка</span>
+                <input id="rate" type="number" value="8.9">
             </div>
 
-            <!-- Кнопки -->
-            <button class="calculate-button">Рассчитать кредит</button>
-            <button class="payment-schedule-button">График платежей</button>
+            <div class="buttons">
+                <button id="calculate-button">Рассчитать кредит</button>
+                <button id="schedule-button">График платежей</button>
+            </div>
         </div>
     </div>
 
-    <!-- Модальное окно графика платежей -->
-    <div class="modal" id="payment-schedule-modal">
+    <div class="modal">
         <div class="modal-content">
-            <button class="close-modal">X</button>
+            <button class="modal-close">X</button>
             <h2>График платежей</h2>
-            <!-- Здесь может быть динамически сгенерированный график -->
-            <p>Здесь будет отображаться график платежей...</p>
+            <div id="payment-schedule"></div>
         </div>
     </div>
 
