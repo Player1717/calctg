@@ -31,18 +31,35 @@ body {
     box-sizing: border-box;
 }
 
+/* Кнопки сроков кредита */
 .credit-term-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
+    justify-content: space-between;
 }
 
 .credit-term-buttons button {
-    width: 30px;
-    height: 30px;
+    width: 33px; /* Увеличено на 10% */
+    height: 33px; /* Увеличено на 10% */
     font-size: 12px;
     text-align: center;
     padding: 0;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Выделение активной кнопки */
+.credit-term-buttons button.active {
+    background-color: #d3d3d3;
+    transform: scale(1.1); /* Легкий визуальный эффект */
+}
+
+.credit-term-buttons button:hover {
+    background-color: #e0e0e0;
 }
 
 .result-block {
