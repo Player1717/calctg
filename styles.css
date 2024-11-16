@@ -1,35 +1,33 @@
+/* Базовые стили */
 html, body {
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Светлый фон */
+    color: #333; /* Тёмный текст */
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Убираем прокрутку */
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Светлый фон, соответствующий дизайну Telegram */
 }
 
 .container {
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    max-width: 420px; /* Ограничиваем ширину на больших экранах */
+    margin: 0 auto; /* Центрируем */
+    padding: 10px;
     box-sizing: border-box;
-    padding: 10px; /* Уменьшаем отступы для экономии пространства */
 }
 
+/* Вкладки */
 .tabs {
     display: flex;
-    width: 100%;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
 .tablink {
     flex: 1;
-    padding: 8px 5px;
-    font-size: 0.8rem; /* Уменьшаем размер шрифта */
+    padding: 10px;
+    font-size: 0.9rem;
     text-align: center;
     background: #e7e7e7;
     border: none;
@@ -39,104 +37,121 @@ html, body {
 
 .tablink.active {
     background: #d9d9d9;
+    font-weight: bold;
 }
 
+/* Калькулятор */
 .calculator {
-    width: 100%;
-    max-width: 420px; /* Ограничиваем ширину */
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Интервал между блоками */
+    gap: 10px;
 }
 
 .input-section {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 100%;
 }
 
-.input-group input,
-.input-group select {
-    font-size: 0.9rem;
+.input-group input {
+    font-size: 1rem;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
 }
 
+.term-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.term-buttons button {
+    flex: 1;
+    padding: 8px;
+    font-size: 0.8rem;
+    border: 1px solid #ccc;
+    background: #e7e7e7;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.term-buttons button.active {
+    background: #007bff;
+    color: white;
+}
+
+/* Вывод результата */
 .output-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    background-color: #f0f8ff; /* Голубой фон */
+    background: #f0f8ff;
     padding: 10px;
     border-radius: 10px;
+    gap: 10px;
 }
 
 .output-section h2 {
-    margin: 0;
     font-size: 1.2rem;
+    margin: 0;
+}
+
+.result {
+    font-size: 1.5rem;
+    font-weight: bold;
     color: #333;
 }
 
-.output-section .result {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #111;
-}
-
+/* Кнопки */
 button {
     width: 100%;
     padding: 10px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.calculate-button {
     background-color: #007bff;
     color: white;
 }
 
-button:hover {
+.calculate-button:hover {
     background-color: #0056b3;
 }
 
 .payment-schedule-button {
     background-color: #28a745;
+    color: white;
 }
 
 .payment-schedule-button:hover {
     background-color: #1e7e34;
 }
 
-/* Адаптация для маленьких экранов */
+/* Адаптивные стили */
 @media (max-width: 768px) {
     .tablink {
-        font-size: 0.7rem;
-        padding: 6px 3px;
-    }
-
-    .calculator {
-        transform: scale(0.9); /* Масштабируем содержимое */
-        transform-origin: top center;
+        font-size: 0.8rem;
+        padding: 8px;
     }
 
     .output-section h2 {
         font-size: 1rem;
     }
 
-    .output-section .result {
+    .result {
         font-size: 1.3rem;
     }
 
     button {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 }
