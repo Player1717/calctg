@@ -10,12 +10,7 @@ body {
     box-sizing: border-box;
 }
 
-.tabs button {
-    width: 49%;
-    padding: 10px;
-    font-size: 14px;
-    margin: 0;
-}
+/* Убран стиль для кнопок "Автокредит" и "Кредит наличными" */
 
 .form label {
     display: block;
@@ -62,11 +57,12 @@ body {
     background-color: #e0e0e0;
 }
 
+/* Верхний блок (ранее нижний) */
 .result-block {
     background-color: #f0f8ff;
     padding: 15px;
     border-radius: 5px;
-    margin-top: 10px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -114,6 +110,7 @@ body {
     border-radius: 3px;
 }
 
+/* Модальное окно */
 .modal {
     display: none;
     position: fixed;
