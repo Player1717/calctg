@@ -1,125 +1,102 @@
-/* Базовые стили */
-html, body {
+body {
     margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
 }
 
-.container {
-    width: 100%;
-    max-width: 420px;
+.calculator {
+    max-width: 480px;
     margin: 0 auto;
     padding: 10px;
+    box-sizing: border-box;
 }
 
-/* Вкладки */
-.tabs {
-    display: flex;
-    justify-content: space-between;
+.tabs button {
+    width: 49%;
+    padding: 10px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 14px;
+}
+
+.form input {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
     margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
-.tablink {
-    flex: 1;
-    padding: 8px;
-    font-size: 0.8rem;
-    background: #e7e7e7;
-    border: none;
-    border-radius: 5px 5px 0 0;
-    cursor: pointer;
-}
-
-.tablink.active {
-    background: #d9d9d9;
-}
-
-/* Калькулятор */
-.calculator {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.input-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-group input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.term-buttons {
+.credit-term-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
 
-.term-buttons button {
-    flex: 1 1 30%; /* Уменьшаем кнопки, чтобы помещалось больше в строку */
-    padding: 8px;
-    font-size: 0.7rem;
-    background: #e7e7e7;
-    border: 1px solid #ccc;
+.credit-term-buttons button {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    text-align: center;
+    padding: 0;
+}
+
+.result-block {
+    background-color: #f0f8ff;
+    padding: 15px;
     border-radius: 5px;
-}
-
-.output-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #f0f8ff;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.output-section .rate-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
     margin-top: 10px;
-}
-
-.output-section .rate-group label {
-    font-size: 0.9rem;
-}
-
-.output-section .rate-group input {
-    width: 50px;
     text-align: center;
 }
 
-/* Кнопки */
-button {
+.result-block h2 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.monthly-payment {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.rate-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    gap: 5px;
+}
+
+.rate-input-wrapper input {
+    width: 50px;
+    font-size: 14px;
+}
+
+.rate-input-wrapper::after {
+    content: '%';
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
     width: 100%;
     padding: 10px;
-    font-size: 1rem;
+    font-size: 14px;
+    margin-bottom: 10px;
+    background-color: #008cba;
+    color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 3px;
 }
 
-.calculate-button {
-    background: #007bff;
-    color: white;
-}
-
-.payment-schedule-button {
-    background: #28a745;
-    color: white;
-}
-
-/* Модальное окно */
 .modal {
     display: none;
     position: fixed;
@@ -135,20 +112,20 @@ button {
 .modal-content {
     background: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 90%;
+    max-width: 400px;
     text-align: center;
-    position: relative;
 }
 
-.modal-content .close-modal {
+.modal-close {
     position: absolute;
     top: 10px;
     right: 10px;
     background: red;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
 }
