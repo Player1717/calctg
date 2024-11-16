@@ -1,65 +1,55 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="calculator">
-        <div class="tabs">
-            <button>Автокредит</button>
-            <button>Кредит наличными</button>
+        <!-- Нижний блок перемещен наверх -->
+        <div class="result-block">
+            <h2>Ежемесячный платеж</h2>
+            <div class="monthly-payment">20 710 ₽</div>
+            <div class="rate-input-wrapper">
+                <label for="rate">Ставка</label>
+                <input type="number" id="rate" placeholder="8.9">
+            </div>
+            <div class="buttons">
+                <button id="calculate-button">Рассчитать кредит</button>
+                <button id="schedule-button">График платежей</button>
+            </div>
         </div>
 
+        <!-- Форма для ввода -->
         <div class="form">
             <label for="auto-price">Стоимость авто</label>
-            <input id="auto-price" type="number" value="1000000">
-
+            <input type="number" id="auto-price" placeholder="1000000">
+            
             <label for="down-payment">Первоначальный взнос</label>
-            <input id="down-payment" type="number" value="200000">
-
+            <input type="number" id="down-payment" placeholder="200000">
+            
             <label>Срок кредита (мес)</label>
             <div class="credit-term-buttons">
                 <button value="12">12</button>
                 <button value="24">24</button>
                 <button value="36">36</button>
                 <button value="48">48</button>
-                <button value="60">60</button>
+                <button value="60" class="active">60</button>
                 <button value="72">72</button>
                 <button value="84">84</button>
                 <button value="96">96</button>
             </div>
-
-            <label for="insurance">КАСКО</label>
-            <input id="insurance" type="number" value="50000">
-
-            <label for="extra-services">Дополнительные сервисы</label>
-            <input id="extra-services" type="number" value="10000">
-        </div>
-
-        <div class="result-block">
-            <h2>Ежемесячный платеж</h2>
-            <p class="monthly-payment">20 710 ₽</p>
-
-            <div class="rate-input-wrapper">
-                <span>Ставка</span>
-                <input id="rate" type="number" value="8.9">
-            </div>
-
-            <div class="buttons">
-                <button id="calculate-button">Рассчитать кредит</button>
-                <button id="schedule-button">График платежей</button>
-            </div>
         </div>
     </div>
 
+    <!-- Модальное окно для графика платежей -->
     <div class="modal">
         <div class="modal-content">
             <button class="modal-close">X</button>
             <h2>График платежей</h2>
-            <div id="payment-schedule"></div>
+            <p>Здесь будет график платежей</p>
         </div>
     </div>
 
