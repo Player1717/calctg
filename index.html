@@ -32,8 +32,11 @@
                         <button>12</button>
                         <button>24</button>
                         <button>36</button>
-                        <button class="active">48</button>
+                        <button>48</button>
                         <button>60</button>
+                        <button>72</button>
+                        <button>84</button>
+                        <button>96</button>
                     </div>
                 </div>
                 <div class="input-group">
@@ -58,6 +61,10 @@
             <div class="output-section">
                 <h2>Ежемесячный платёж</h2>
                 <div class="result">20 710 ₽</div>
+                <div class="rate-group">
+                    <label for="rate">Ставка</label>
+                    <input type="number" id="rate" value="8.9">
+                </div>
             </div>
 
             <!-- Кнопки -->
@@ -65,5 +72,17 @@
             <button class="payment-schedule-button">График платежей</button>
         </div>
     </div>
+
+    <!-- Модальное окно графика платежей -->
+    <div class="modal" id="payment-schedule-modal">
+        <div class="modal-content">
+            <button class="close-modal">X</button>
+            <h2>График платежей</h2>
+            <!-- Здесь может быть динамически сгенерированный график -->
+            <p>Здесь будет отображаться график платежей...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
