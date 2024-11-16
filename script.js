@@ -17,6 +17,16 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+// Обработчик выбора кнопок срока кредита
+document.querySelectorAll(".credit-term-buttons button").forEach(button => {
+    button.addEventListener("click", (e) => {
+        // Убираем активный класс у всех кнопок
+        document.querySelectorAll(".credit-term-buttons button").forEach(btn => btn.classList.remove("active"));
+        // Добавляем активный класс текущей кнопке
+        e.target.classList.add("active");
+    });
+});
+
 // Рассчитать кредит
 function calculateCredit() {
     const autoPrice = parseFloat(document.querySelector("#auto-price").value) || 0;
