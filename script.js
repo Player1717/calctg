@@ -14,6 +14,19 @@ const finServicesInput = document.getElementById("finServices");
 const finServicesIncludedCheckbox = document.getElementById("finServicesIncluded");
 const scheduleModal = document.getElementById("scheduleModal");
 const scheduleContent = document.getElementById("scheduleContent");
+// Закрытие клавиатуры при нажатии на любую часть экрана
+document.addEventListener("click", (event) => {
+    if (!event.target.closest("input") && document.activeElement.tagName === "INPUT") {
+        document.activeElement.blur(); // Снять фокус с активного элемента
+    }
+});
+
+// Закрытие клавиатуры при нажатии на Enter
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && document.activeElement.tagName === "INPUT") {
+        document.activeElement.blur(); // Снять фокус с активного элемента
+    }
+});
 
 // Установка срока кредита через кнопки и дублирование значения в поле
 document.querySelectorAll(".credit-term-btn").forEach((button) => {
