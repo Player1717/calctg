@@ -33,7 +33,19 @@ document.querySelectorAll(".credit-term-btn").forEach((button) => {
     button.addEventListener("click", (event) => {
         const term = event.target.getAttribute("data-term");
         loanTermInput.value = term; // Дублируем значение в поле ввода
-    });
+    // Скрытие клавиатуры при касании экрана
+document.body.addEventListener("touchstart", function(event) {
+    // Если нажатие не на поле ввода, скрыть клавиатуру
+    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+        document.activeElement.blur();
+    }
+});
+
+// При нажатии на клавишу "Enter" на мобильной клавиатуре скрываем клавиатуру
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        document.activeElement.blur();
+    }
 });
 
 // Функция расчета кредита
