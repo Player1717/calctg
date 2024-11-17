@@ -1,53 +1,123 @@
-// Закрепляем приложение
-Telegram.WebApp.expand();
-Telegram.WebApp.disableClosingConfirmation();
+// Инициализация переменных
+const calculateButton = document.getElementById("calculate");
+const showScheduleButton = document.getElementById("showSchedule");
+const closeScheduleButton = document.getElementById("closeSchedule");
 
-// Убираем клавиатуру при клике вне поля
-document.addEventListener("click", (e) => {
-    const inputs = document.querySelectorAll("input");
-    if (![...inputs].includes(e.target)) {
-        inputs.forEach(input => input.blur());
-    }
-});
+const monthlyPaymentDisplay = document.getElementById("monthlyPayment");
+const rateInput = document.getElementById("rate");
+const carPriceInput = document.getElementById("carPrice");
+const initialPaymentInput = document.getElementById("initialPayment");
+const loanTermInput = document.getElementById("loanTerm");
+const cascoInput = document.getElementById("casco");
+const cascoIncludedCheckbox = document.getElementById("cascoIncluded");
+const finServicesInput = document.getElementById("finServices");
+const finServicesIncludedCheckbox = document.getElementById("finServicesIncluded");
+const scheduleModal = document.getElementById("scheduleModal");
+const scheduleContent = document.getElementById("scheduleContent");
 
-// Убираем клавиатуру при нажатии "Enter"
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-        document.activeElement.blur();
-    }
-});
-
-// Обработчик выбора кнопок срока кредита
-document.querySelectorAll(".credit-term-buttons button").forEach(button => {
-    button.addEventListener("click", (e) => {
-        // Убираем активный класс у всех кнопок
-        document.querySelectorAll(".credit-term-buttons button").forEach(btn => btn.classList.remove("active"));
-        // Добавляем активный класс текущей кнопке
-        e.target.classList.add("active");
+// Установка срока кредита через кнопки
+document.querySelectorAll(".credit-term-btn").forEach((button) => {
+    button.addEventListener("click", (event) => {
+        loanTermInput.value = event.target.getAttribute("data-term");
     });
 });
 
-// Рассчитать кредит
-function calculateCredit() {
-    const autoPrice = parseFloat(document.querySelector("#auto-price").value) || 0;
-    const downPayment = parseFloat(document.querySelector("#down-payment").value) || 0;
-    const months = parseInt(document.querySelector(".credit-term-buttons button.active")?.value) || 12;
-    const rate = parseFloat(document.querySelector("#rate").value) || 0;
+// Функция расчета кредита
+function calculateLoan() {
+    const carPrice = parseFloat(carPriceInput.value) || 0;
+    const initialPayment = parseFloat(initialPaymentInput.value) || 0;
+    const loanTerm = parseInt(loanTermInput.value) || 0;
+    const interestRate = parseFloat(rateInput.value) || 0;
+    let casco = parseFloat(cascoInput.value) || 0;
+    let finServices = parseFloat(finServicesInput.value) || 0;
 
-    const loanAmount = autoPrice - downPayment;
-    const monthlyRate = rate / 100 / 12;
-    const monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+    // Учитываем КАСКО и фин. сервисы в кредит, если включены
+    if (!cascoIncludedCheckbox.checked) casco = 0;
+    if (!finServicesIncludedCheckbox.checked) finServices = 0;
 
-    document.querySelector(".monthly-payment").textContent = `${monthlyPayment.toFixed(2)} ₽`;
+    const loanAmount = carPrice - initialPayment + casco + finServices;
+
+    if (loanAmount <= 0 || loanTerm <= 0 || interestRate <= 0) {
+        monthlyPaymentDisplay.textContent = "Некорректные данные";
+        return;
+    }
+
+    const monthlyRate = interestRate / 100 / 12;
+    const monthlyPayment =
+        (loanAmount * monthlyRate) /
+        (1 - Math.pow(1 + monthlyRate, -loanTerm));
+
+    // Обновляем отображение ежемесячного платежа
+    monthlyPaymentDisplay.textContent = `${monthlyPayment.toFixed(2)} ₽`;
+
+    // Возвращаем данные для графика
+    return { loanAmount, monthlyRate, monthlyPayment, loanTerm };
 }
 
-document.querySelector("#calculate-button").addEventListener("click", calculateCredit);
+// Генерация графика платежей
+function generateSchedule({ loanAmount, monthlyRate, monthlyPayment, loanTerm }) {
+    let balance = loanAmount;
+    let totalOverpayment = 0;
+    let scheduleHTML = `
+        <p>Сумма кредита: ${loanAmount.toFixed(2)} ₽</p>
+        <p>Ставка: ${(monthlyRate * 12 * 100).toFixed(2)}%</p>
+        <p>Переплата: </p>
+        <table class="w-full text-left mt-3 border-collapse">
+            <thead>
+                <tr>
+                    <th class="border-b py-2">#</th>
+                    <th class="border-b py-2">Платеж</th>
+                    <th class="border-b py-2">Основной долг</th>
+                    <th class="border-b py-2">Проценты</th>
+                    <th class="border-b py-2">Остаток</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
 
-// График платежей
-document.querySelector("#schedule-button").addEventListener("click", () => {
-    document.querySelector(".modal").style.display = "flex";
+    for (let i = 1; i <= loanTerm; i++) {
+        const interestPayment = balance * monthlyRate;
+        const principalPayment = monthlyPayment - interestPayment;
+        balance -= principalPayment;
+        totalOverpayment += interestPayment;
+
+        scheduleHTML += `
+            <tr>
+                <td class="border-t py-2">${i}</td>
+                <td class="border-t py-2">${monthlyPayment.toFixed(2)} ₽</td>
+                <td class="border-t py-2">${principalPayment.toFixed(2)} ₽</td>
+                <td class="border-t py-2">${interestPayment.toFixed(2)} ₽</td>
+                <td class="border-t py-2">${Math.max(balance, 0).toFixed(2)} ₽</td>
+            </tr>
+        `;
+    }
+
+    scheduleHTML += `
+            </tbody>
+        </table>
+        <p class="mt-3">Общая переплата: ${totalOverpayment.toFixed(2)} ₽</p>
+    `;
+
+    return scheduleHTML;
+}
+
+// Обработчик нажатия кнопки "Рассчитать кредит"
+calculateButton.addEventListener("click", () => {
+    const data = calculateLoan();
+    if (!data) return;
 });
 
-document.querySelector(".modal-close").addEventListener("click", () => {
-    document.querySelector(".modal").style.display = "none";
+// Обработчик нажатия кнопки "График платежей"
+showScheduleButton.addEventListener("click", () => {
+    const data = calculateLoan();
+    if (!data) return;
+
+    const scheduleHTML = generateSchedule(data);
+    scheduleContent.innerHTML = scheduleHTML;
+    scheduleModal.classList.remove("hidden");
+});
+
+// Закрытие модального окна графика платежей
+closeScheduleButton.addEventListener("click", () => {
+    scheduleModal.classList.add("hidden");
 });
