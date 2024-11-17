@@ -112,7 +112,7 @@ body {
 }
 
 .service-row input[type="number"] {
-    flex-grow: 1; /* Поле ввода растягивается */
+    flex-grow: 10; /* Поле ввода растягивается */
     max-width: 100px; /* Максимальная ширина для полей ввода */
     padding: 5px;
     font-size: 14px;
