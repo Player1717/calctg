@@ -14,17 +14,33 @@ const finServicesInput = document.getElementById("finServices");
 const finServicesIncludedCheckbox = document.getElementById("finServicesIncluded");
 const scheduleModal = document.getElementById("scheduleModal");
 const scheduleContent = document.getElementById("scheduleContent");
-// Закрытие клавиатуры при нажатии на любую часть экрана
-document.addEventListener("click", (event) => {
-    if (!event.target.closest("input") && document.activeElement.tagName === "INPUT") {
-        document.activeElement.blur(); // Снять фокус с активного элемента
+// Скрытие клавиатуры при касании любой части экрана
+document.body.addEventListener("touchstart", function(event) {
+    // Если касание произошло не на поле ввода, скрыть клавиатуру
+    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+        document.activeElement.blur(); // Убираем фокус с активного поля ввода, скрывая клавиатуру
     }
 });
 
-// Закрытие клавиатуры при нажатии на Enter
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && document.activeElement.tagName === "INPUT") {
-        document.activeElement.blur(); // Снять фокус с активного элемента
+// Скрытие клавиатуры при нажатии клавиши "Enter" или "Return"
+document.addEventListener("keydown", function(event) {
+    // Проверяем, нажата ли клавиша Enter или Return
+    if (event.key === "Enter" || event.key === "Return") {
+        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
+    }
+});
+
+// Дополнительно: скрытие клавиатуры при клике вне поля ввода
+document.body.addEventListener("click", function(event) {
+    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+        document.activeElement.blur(); // Убираем фокус с активного поля ввода
+    }
+});
+
+// Блокируем стандартное поведение увеличения изображения при двойном тапе
+document.body.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault(); // Отключаем увеличение
     }
 });
 
