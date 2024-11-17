@@ -1,169 +1,216 @@
-// Инициализация переменных
-const calculateButton = document.getElementById("calculate");
-const showScheduleButton = document.getElementById("showSchedule");
-const closeScheduleButton = document.getElementById("closeSchedule");
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авто кредитный калькулятор</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
 
-const monthlyPaymentDisplay = document.getElementById("monthlyPayment");
-const rateInput = document.getElementById("rate");
-const carPriceInput = document.getElementById("carPrice");
-const initialPaymentInput = document.getElementById("initialPayment");
-const loanTermInput = document.getElementById("loanTerm");
-const cascoInput = document.getElementById("casco");
-const cascoIncludedCheckbox = document.getElementById("cascoIncluded");
-const finServicesInput = document.getElementById("finServices");
-const finServicesIncludedCheckbox = document.getElementById("finServicesIncluded");
-const scheduleModal = document.getElementById("scheduleModal");
-const scheduleContent = document.getElementById("scheduleContent");
-// Скрытие клавиатуры при касании любой части экрана
-document.body.addEventListener("touchstart", function(event) {
-    // Если касание произошло не на поле ввода, скрыть клавиатуру
-    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
-        document.activeElement.blur(); // Убираем фокус с активного поля ввода, скрывая клавиатуру
-    }
-});
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
 
-// Скрытие клавиатуры при нажатии клавиши "Enter" или "Return"
-document.addEventListener("keydown", function(event) {
-    // Проверяем, нажата ли клавиша Enter или Return
-    if (event.key === "Enter" || event.key === "Return") {
-        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
-    }
-});
+        .calculator-block {
+            background-color: #e0f7fa; /* светло-зеленый */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-// Дополнительно: скрытие клавиатуры при клике вне поля ввода
-document.body.addEventListener("click", function(event) {
-    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
-        document.activeElement.blur(); // Убираем фокус с активного поля ввода
-    }
-});
+        .calculator-block h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
 
-// Блокируем стандартное поведение увеличения изображения при двойном тапе
-document.body.addEventListener('touchstart', (e) => {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault(); // Отключаем увеличение
-    }
-});
+        .calculator-block .monthly-payment {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #009688;
+        }
 
-// Отключаем увеличение изображения при двойном тапе
-document.body.addEventListener('touchstart', (e) => {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-});
+        .calculator-block input {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 200px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
 
-// Скрытие клавиатуры при касании любой части экрана
-document.body.addEventListener("touchstart", function(event) {
-    // Если касание произошло не на поле ввода, скрыть клавиатуру
-    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
-        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
-    }
-});
+        .calculator-block button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #009688;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
 
-// Скрытие клавиатуры при нажатии клавиши "Enter" или "Return"
-document.addEventListener("keydown", function(event) {
-    // Проверяем, нажата ли клавиша Enter или Return
-    if (event.key === "Enter" || event.key === "Return") {
-        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
-    }
-});
+        .calculator-block button:hover {
+            background-color: #00796b;
+        }
 
+        .calculator-block .calc-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-// Функция расчета кредита
-function calculateLoan() {
-    const carPrice = parseFloat(carPriceInput.value) || 0;
-    const initialPayment = parseFloat(initialPaymentInput.value) || 0;
-    const loanTerm = parseInt(loanTermInput.value) || 0;
-    const interestRate = parseFloat(rateInput.value) || 0;
-    let casco = parseFloat(cascoInput.value) || 0;
-    let finServices = parseFloat(finServicesInput.value) || 0;
+        .calculator-block .calc-options button {
+            width: 40px;
+            font-size: 14px;
+        }
 
-    // Учитываем КАСКО и фин. сервисы в кредит, если включены
-    if (!cascoIncludedCheckbox.checked) casco = 0;
-    if (!finServicesIncludedCheckbox.checked) finServices = 0;
+        .input-group {
+            margin-bottom: 10px;
+        }
 
-    const loanAmount = carPrice - initialPayment + casco + finServices;
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
 
-    if (loanAmount <= 0 || loanTerm <= 0 || interestRate <= 0) {
-        monthlyPaymentDisplay.textContent = "Некорректные данные";
-        return;
-    }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-    const monthlyRate = interestRate / 100 / 12;
-    const monthlyPayment =
-        (loanAmount * monthlyRate) /
-        (1 - Math.pow(1 + monthlyRate, -loanTerm));
+        /* Отключение увеличения изображений при двойном тапе */
+        * {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
 
-    // Обновляем отображение ежемесячного платежа
-    monthlyPaymentDisplay.textContent = `${monthlyPayment.toFixed(2)} ₽`;
+    <div class="container">
+        <div class="calculator-block">
+            <h2>Ежемесячный платеж</h2>
+            <div class="monthly-payment">0</div>
+            <h2>Ставка</h2>
+            <input type="number" id="interest-rate" placeholder="Введите ставку (%)">
+            <div class="calc-options">
+                <button id="calculate-btn">Рассчитать кредит</button>
+                <button id="payment-schedule-btn">График платежей</button>
+            </div>
+        </div>
 
-    // Возвращаем данные для графика
-    return { loanAmount, monthlyRate, monthlyPayment, loanTerm };
-}
+        <div class="input-group">
+            <label for="car-price">Стоимость автомобиля</label>
+            <input type="number" id="car-price" placeholder="Введите стоимость автомобиля">
+        </div>
 
-// Генерация графика платежей
-function generateSchedule({ loanAmount, monthlyRate, monthlyPayment, loanTerm }) {
-    let balance = loanAmount;
-    let totalOverpayment = 0;
-    let scheduleHTML = `
-        <p>Сумма кредита: ${loanAmount.toFixed(2)} ₽</p>
-        <p>Ставка: ${(monthlyRate * 12 * 100).toFixed(2)}%</p>
-        <p>Переплата: </p>
-        <table class="w-full text-left mt-3 border-collapse">
-            <thead>
-                <tr>
-                    <th class="border-b py-2">#</th>
-                    <th class="border-b py-2">Платеж</th>
-                    <th class="border-b py-2">Основной долг</th>
-                    <th class="border-b py-2">Проценты</th>
-                    <th class="border-b py-2">Остаток</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+        <div class="input-group">
+            <label for="down-payment">Первоначальный взнос</label>
+            <input type="number" id="down-payment" placeholder="Введите первоначальный взнос">
+        </div>
 
-    for (let i = 1; i <= loanTerm; i++) {
-        const interestPayment = balance * monthlyRate;
-        const principalPayment = monthlyPayment - interestPayment;
-        balance -= principalPayment;
-        totalOverpayment += interestPayment;
+        <div class="input-group">
+            <label for="loan-term">Срок кредита</label>
+            <input type="number" id="loan-term" placeholder="Введите срок кредита">
+            <div class="calc-options">
+                <button class="loan-term-btn" data-term="12">12</button>
+                <button class="loan-term-btn" data-term="24">24</button>
+                <button class="loan-term-btn" data-term="36">36</button>
+                <button class="loan-term-btn" data-term="48">48</button>
+                <button class="loan-term-btn" data-term="60">60</button>
+                <button class="loan-term-btn" data-term="72">72</button>
+                <button class="loan-term-btn" data-term="84">84</button>
+                <button class="loan-term-btn" data-term="96">96</button>
+            </div>
+        </div>
 
-        scheduleHTML += `
-            <tr>
-                <td class="border-t py-2">${i}</td>
-                <td class="border-t py-2">${monthlyPayment.toFixed(2)} ₽</td>
-                <td class="border-t py-2">${principalPayment.toFixed(2)} ₽</td>
-                <td class="border-t py-2">${interestPayment.toFixed(2)} ₽</td>
-                <td class="border-t py-2">${Math.max(balance, 0).toFixed(2)} ₽</td>
-            </tr>
-        `;
-    }
+        <div class="input-group">
+            <label for="insurance">КАСКО</label>
+            <input type="number" id="insurance" placeholder="Введите стоимость КАСКО">
+            <label><input type="checkbox" id="insurance-loan"> В кредит</label>
+        </div>
 
-    scheduleHTML += `
-            </tbody>
-        </table>
-        <p class="mt-3">Общая переплата: ${totalOverpayment.toFixed(2)} ₽</p>
-    `;
+        <div class="input-group">
+            <label for="service-fees">Фин. сервисы</label>
+            <input type="number" id="service-fees" placeholder="Введите стоимость Фин. сервисов">
+            <label><input type="checkbox" id="service-fees-loan"> В кредит</label>
+        </div>
+    </div>
 
-    return scheduleHTML;
-}
+    <script>
+        // Скрытие клавиатуры при касании любой части экрана
+        document.body.addEventListener("touchstart", function(event) {
+            // Если касание произошло не на поле ввода, скрыть клавиатуру
+            if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+                setTimeout(() => {
+                    document.activeElement.blur(); // Убираем фокус с активного поля ввода
+                }, 100); // Немного задерживаем для надёжности
+            }
+        });
 
-// Обработчик нажатия кнопки "Рассчитать кредит"
-calculateButton.addEventListener("click", () => {
-    const data = calculateLoan();
-    if (!data) return;
-});
+        // Скрытие клавиатуры при нажатии клавиши "Enter" или "Return"
+        document.addEventListener("keydown", function(event) {
+            // Проверяем, нажата ли клавиша Enter или Return
+            if (event.key === "Enter" || event.key === "Return") {
+                setTimeout(() => {
+                    document.activeElement.blur(); // Убираем фокус с поля ввода
+                }, 100); // Задержка для лучшего срабатывания
+            }
+        });
 
-// Обработчик нажатия кнопки "График платежей"
-showScheduleButton.addEventListener("click", () => {
-    const data = calculateLoan();
-    if (!data) return;
+        // Дополнительно: скрытие клавиатуры при клике вне поля ввода
+        document.body.addEventListener("click", function(event) {
+            if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+                setTimeout(() => {
+                    document.activeElement.blur(); // Убираем фокус с активного поля ввода
+                }, 100); // Добавлена задержка
+            }
+        });
 
-    const scheduleHTML = generateSchedule(data);
-    scheduleContent.innerHTML = scheduleHTML;
-    scheduleModal.classList.remove("hidden");
-});
+        // Блокируем стандартное поведение увеличения изображения при двойном тапе
+        document.body.addEventListener('touchstart', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault(); // Отключаем увеличение
+            }
+        });
 
-// Закрытие модального окна графика платежей
-closeScheduleButton.addEventListener("click", () => {
-    scheduleModal.classList.add("hidden");
-});
+        // Обработчики событий для кнопок срока кредита
+        const loanTermButtons = document.querySelectorAll('.loan-term-btn');
+        loanTermButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const loanTermInput = document.getElementById('loan-term');
+                loanTermInput.value = button.getAttribute('data-term');
+            });
+        });
+
+        // Пример обработки нажатия кнопки "Рассчитать кредит"
+        document.getElementById("calculate-btn").addEventListener("click", function() {
+            // Здесь будет логика для расчета кредита
+            alert("Рассчитать кредит");
+        });
+
+        // Пример обработки нажатия кнопки "График платежей"
+        document.getElementById("payment-schedule-btn").addEventListener("click", function() {
+            // Здесь будет логика для отображения графика платежей
+            alert("График платежей");
+        });
+    </script>
+</body>
+</html>
