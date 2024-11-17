@@ -108,7 +108,7 @@ body {
     font-size: 14px;
     flex-shrink: 0; /* Убираем сжатие текста */
     width: 150px; /* Устанавливаем фиксированную ширину для выравнивания */
-    text-align: right; /* Выравниваем текст по правому краю */
+    text-align: left; /* Выравниваем текст по правому краю */
 }
 
 .service-row input[type="number"] {
