@@ -15,10 +15,11 @@ const finServicesIncludedCheckbox = document.getElementById("finServicesIncluded
 const scheduleModal = document.getElementById("scheduleModal");
 const scheduleContent = document.getElementById("scheduleContent");
 
-// Установка срока кредита через кнопки
+// Установка срока кредита через кнопки и дублирование значения в поле
 document.querySelectorAll(".credit-term-btn").forEach((button) => {
     button.addEventListener("click", (event) => {
-        loanTermInput.value = event.target.getAttribute("data-term");
+        const term = event.target.getAttribute("data-term");
+        loanTermInput.value = term; // Дублируем значение в поле ввода
     });
 });
 
