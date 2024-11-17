@@ -1,74 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Калькулятор авто кредита</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
-    <div class="calculator">
-        <!-- Верхний блок -->
-        <div class="result-block">
-            <h2>Ежемесячный платеж</h2>
-            <div class="monthly-payment">20 710 ₽</div>
-            <div class="rate-input-wrapper">
-                <label for="rate">Ставка</label>
-                <input type="number" id="rate" placeholder="8.9">
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-5">
+        <!-- Блок с результатом -->
+        <div class="bg-green-100 text-center py-5 rounded-lg mb-5">
+            <h2 class="text-lg font-bold text-gray-700">Ежемесячный платеж</h2>
+            <p id="monthlyPayment" class="text-2xl font-semibold text-green-800">0 ₽</p>
+            <div class="mt-3">
+                <label class="text-gray-600 text-sm">Ставка (%)</label>
+                <input id="rate" type="number" class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="Введите ставку">
             </div>
-            <div class="buttons">
-                <button id="calculate-button">Рассчитать кредит</button>
-                <button id="schedule-button">График платежей</button>
+            <div class="flex justify-between mt-4">
+                <button id="calculate" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                    Рассчитать кредит
+                </button>
+                <button id="showSchedule" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    График платежей
+                </button>
+            </div>
+        </div>
+
+        <!-- Поля ввода -->
+        <div class="mb-4">
+            <label class="block text-gray-600 text-sm">Стоимость автомобиля</label>
+            <input id="carPrice" type="number" class="w-full mt-1 px-3 py-2 border rounded-md" placeholder="Введите стоимость">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-600 text-sm">Первоначальный взнос</label>
+            <input id="initialPayment" type="number" class="w-full mt-1 px-3 py-2 border rounded-md" placeholder="Введите сумму">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-600 text-sm">Срок кредита (мес.)</label>
+            <div class="flex gap-2 mt-1">
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="12">12</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="24">24</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="36">36</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="48">48</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="60">60</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="72">72</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="84">84</button>
+                <button class="credit-term-btn px-3 py-2 bg-gray-200 rounded-md hover:bg-gray-300" data-term="96">96</button>
+            </div>
+            <input id="loanTerm" type="number" class="w-full mt-2 px-3 py-2 border rounded-md" placeholder="Или введите срок вручную">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-600 text-sm">КАСКО</label>
+            <div class="flex items-center gap-2">
+                <input id="casco" type="number" class="flex-1 px-3 py-2 border rounded-md" placeholder="Введите сумму">
+                <input id="cascoIncluded" type="checkbox" class="w-5 h-5">
+                <label for="cascoIncluded" class="text-gray-600 text-sm">В кредит</label>
             </div>
         </div>
 
-        <!-- Форма для ввода -->
-        <div class="form">
-            <label for="auto-price">Стоимость авто</label>
-            <input type="number" id="auto-price" placeholder="1000000">
-            
-            <label for="down-payment">Первоначальный взнос</label>
-            <input type="number" id="down-payment" placeholder="200000">
-            
-            <label>Срок кредита (мес)</label>
-            <div class="credit-term-buttons">
-                <button value="12">12</button>
-                <button value="24">24</button>
-                <button value="36">36</button>
-                <button value="48">48</button>
-                <button value="60" class="active">60</button>
-                <button value="72">72</button>
-                <button value="84">84</button>
-                <button value="96">96</button>
-            </div>
-
-            <!-- Добавлены строки КАСКО и Финансовые сервисы -->
-            <div class="additional-services">
-    <div class="service-row">
-        <label for="insurance">КАСКО</label>
-        <input type="number" id="insurance" placeholder="50000">
-        <input type="checkbox" id="insurance-credit">
-        <label for="insurance-credit" class="small-text">В кредит</label>
-    </div>
-    <div class="service-row">
-        <label for="financial-services">Финансовые сервисы</label>
-        <input type="number" id="financial-services" placeholder="10000">
-        <input type="checkbox" id="financial-services-credit">
-        <label for="financial-services-credit" class="small-text">В кредит</label>
-    </div>
+        <div>
+            <label class="block text-gray-600 text-sm">Фин. сервисы</label>
+            <div class="flex items-center gap-2">
+                <input id="finServices" type="number" class="flex-1 px-3 py-2 border rounded-md" placeholder="Введите сумму">
+                <input id="finServicesIncluded" type="checkbox" class="w-5 h-5">
+                <label for="finServicesIncluded" class="text-gray-600 text-sm">В кредит</label>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для графика платежей -->
-    <div class="modal">
-        <div class="modal-content">
-            <button class="modal-close">X</button>
-            <h2>График платежей</h2>
-            <p>Здесь будет график платежей</p>
+    <!-- График платежей (модальное окно) -->
+    <div id="scheduleModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white rounded-lg p-5 w-full max-w-md">
+            <h3 class="text-lg font-bold text-gray-700 mb-3">График платежей</h3>
+            <div id="scheduleContent" class="text-sm text-gray-600">
+                <!-- График будет добавлен сюда -->
+            </div>
+            <button id="closeSchedule" class="mt-5 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+                Закрыть
+            </button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="calculator.js"></script>
 </body>
 </html>
