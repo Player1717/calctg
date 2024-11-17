@@ -28,25 +28,29 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-// Установка срока кредита через кнопки и дублирование значения в поле
-document.querySelectorAll(".credit-term-btn").forEach((button) => {
-    button.addEventListener("click", (event) => {
-        const term = event.target.getAttribute("data-term");
-        loanTermInput.value = term; // Дублируем значение в поле ввода
-    // Скрытие клавиатуры при касании экрана
-document.body.addEventListener("touchstart", function(event) {
-    // Если нажатие не на поле ввода, скрыть клавиатуру
-    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
-        document.activeElement.blur();
+// Отключаем увеличение изображения при двойном тапе
+document.body.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
     }
 });
 
-// При нажатии на клавишу "Enter" на мобильной клавиатуре скрываем клавиатуру
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        document.activeElement.blur();
+// Скрытие клавиатуры при касании любой части экрана
+document.body.addEventListener("touchstart", function(event) {
+    // Если касание произошло не на поле ввода, скрыть клавиатуру
+    if (event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
+        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
     }
 });
+
+// Скрытие клавиатуры при нажатии клавиши "Enter" или "Return"
+document.addEventListener("keydown", function(event) {
+    // Проверяем, нажата ли клавиша Enter или Return
+    if (event.key === "Enter" || event.key === "Return") {
+        document.activeElement.blur(); // Убираем фокус с поля ввода, закрывая клавиатуру
+    }
+});
+
 
 // Функция расчета кредита
 function calculateLoan() {
