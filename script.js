@@ -153,6 +153,34 @@
             <label><input type="checkbox" id="service-fees-loan"> В кредит</label>
         </div>
     </div>
+// Закрытие клавиатуры при клике на любую область экрана
+document.addEventListener("touchstart", function (event) {
+    // Если клик происходит вне поля ввода, то убираем фокус
+    if (
+        event.target.tagName !== "INPUT" &&
+        event.target.tagName !== "TEXTAREA" &&
+        event.target.className !== "term-btn" // Исключение для кнопок срока кредита
+    ) {
+        document.activeElement.blur(); // Убираем фокус с текущего элемента
+    }
+});
+
+// Закрытие клавиатуры при нажатии на клавишу Enter/Return
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === "Return") {
+        document.activeElement.blur(); // Убираем фокус с текущего элемента
+        event.preventDefault(); // Предотвращаем стандартное поведение клавиатуры
+    }
+});
+
+// Дополнительно: дублирование срока кредита в поле ввода
+document.querySelectorAll(".term-btn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+        const termInput = document.querySelector(".loan-term");
+        termInput.value = btn.textContent.trim(); // Устанавливаем значение из кнопки
+        termInput.blur(); // Убираем фокус с поля
+    });
+});
 
     <script>
         // Скрытие клавиатуры при касании любой части экрана
