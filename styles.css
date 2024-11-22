@@ -1,164 +1,199 @@
-body {
+/* Общие стили */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Отключаем прокрутку */
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .calculator {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.form label {
-    display: block;
-    margin: 10px 0 5px;
-    font-size: 14px;
-}
-
-.form input {
     width: 100%;
-    padding: 5px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
-
-/* Кнопки сроков кредита */
-.credit-term-buttons {
+    max-width: 400px;
+    height: 100%; /* Фиксируем высоту приложения на весь экран */
+    padding: 10px;
+    background-color: #fff;
     display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    flex-direction: column;
     justify-content: space-between;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.credit-term-buttons button {
-    width: 33px; /* Увеличено на 10% */
-    height: 33px; /* Увеличено на 10% */
-    font-size: 12px;
+.result {
+    background-color: #e3f9e5;
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
-    padding: 0;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex: 0 0 auto;
 }
 
-.credit-term-buttons button.active {
-    background-color: #d3d3d3;
-    transform: scale(1.1);
-}
-
-.credit-term-buttons button:hover {
-    background-color: #e0e0e0;
-}
-
-/* Верхний блок */
-.result-block {
-    background-color: #f0f8ff;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.result-block h2 {
-    font-size: 12px;
-    margin-bottom: 5px;
+.result-title {
+    font-size: 18px;
+    color: #333;
 }
 
 .monthly-payment {
-    font-size: 18px;
+    font-size: 30px;
     font-weight: bold;
+    color: #388e3c;
 }
 
-.rate-input-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px 0;
-    gap: 5px;
-}
-
-.rate-input-wrapper input {
-    width: 50px;
+.rate-title {
     font-size: 14px;
-}
-
-.rate-input-wrapper::after {
-    content: '%';
-    margin-left: 5px;
-    font-size: 14px;
-}
-
-/* Блок дополнительных сервисов */
-.additional-services {
-    margin-top: 20px;
-}
-
-.service-row {
-    display: flex;
-    align-items: center; /* Выравниваем элементы по центру */
-    margin-bottom: 10px;
-    gap: 10px; /* Расстояние между элементами */
-}
-
-.service-row label {
-    font-size: 14px;
-    flex-shrink: 0; /* Убираем сжатие текста */
-    width: 150px; /* Устанавливаем фиксированную ширину для выравнивания */
-    text-align: left; /* Выравниваем текст по правому краю */
-}
-
-.service-row input[type="number"] {
-    flex-grow: 10; /* Поле ввода растягивается */
-    max-width: 100px; /* Максимальная ширина для полей ввода */
-    padding: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-.service-row input[type="checkbox"] {
-    margin-left: 10px; /* Отступ для чекбокса */
-}
-
-.service-row .small-text {
-    font-size: 12px;
     color: #555;
-    margin-left: 0; /* Убираем лишние отступы */
+    margin-top: 10px;
 }
 
-/* Модальное окно */
-.modal {
+.rate-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2c6e2a;
+}
+
+.fields {
+    flex: 1;
+    overflow-y: auto; /* Если потребуется прокрутка внутри полей, можно включить */
+}
+
+.field {
+    margin: 15px 0;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.term-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.term-btn {
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.term-btn:first-child {
+    margin-left: 0;
+}
+
+.term-btn:last-child {
+    margin-right: 0;
+}
+
+.term-btn:hover {
+    background-color: #dcdcdc;
+}
+
+.schedule-overlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
     justify-content: center;
     align-items: center;
 }
 
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
+.schedule-overlay .schedule-content {
     width: 90%;
     max-width: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.schedule-overlay table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.schedule-overlay table th, 
+.schedule-overlay table td {
+    border: 1px solid #ccc;
+    padding: 10px;
     text-align: center;
 }
 
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: red;
+.schedule-overlay table th {
+    background-color: #e3f9e5;
+}
+
+.schedule-overlay table td {
+    background-color: #fff;
+}
+
+.schedule-overlay button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #388e3c;
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+.schedule-overlay button:hover {
+    background-color: #2c6e2a;
 }
