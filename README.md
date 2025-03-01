@@ -1,2 +1,0 @@
-# calctg
-Credit calculator
