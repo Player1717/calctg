@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кредитный калькулятор</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Telegram SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             margin: 0;
@@ -21,6 +21,9 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            -webkit-user-select: none; /* Отключение выделения текста для лучшего UX */
+            user-select: none;
+            touch-action: manipulation; /* Улучшение обработки касаний */
         }
 
         .calculator-container {
@@ -85,6 +88,8 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 12px;
+            -webkit-appearance: none; /* Удаление стилизации для мобильных устройств */
+            appearance: none;
         }
 
         button {
@@ -269,14 +274,35 @@
                 
                 this.classList.add('active');
                 document.getElementById(this.dataset.tab).classList.add('active');
+                hideKeyboard(); // Закрытие клавиатуры при переключении вкладок
             });
         });
 
         // Инициализация Telegram WebApp
         const telegram = window.Telegram.WebApp;
         telegram.ready();
-        telegram.expand(); // Расширение до максимальной высоты
-        telegram.requestFullscreen(); // Включение полноэкранного режима
+        telegram.expand();
+        telegram.requestFullscreen();
+
+        // Закрытие клавиатуры
+        function hideKeyboard() {
+            document.activeElement.blur(); // Убирает фокус с активного элемента
+        }
+
+        // Обработчик кликов по экрану
+        document.addEventListener('click', function(event) {
+            const isInput = event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA';
+            if (!isInput) {
+                hideKeyboard(); // Закрыть клавиатуру при клике вне полей ввода
+            }
+        });
+
+        // Обработчик клавиши Enter
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                hideKeyboard(); // Закрыть клавиатуру при нажатии Enter
+            }
+        });
 
         function calculateSchedule(loanAmount, rate, termMonths) {
             const monthlyRate = rate / 100 / 12;
@@ -339,6 +365,7 @@
             });
 
             document.getElementById('schedule-modal').style.display = 'block';
+            hideKeyboard(); // Закрытие клавиатуры при открытии модального окна
         }
 
         function calculateCash() {
@@ -368,7 +395,8 @@
 
         function closeModal() {
             document.getElementById('schedule-modal').style.display = 'none';
-            telegram.exitFullscreen(); // Выход из полноэкранного режима
+            telegram.exitFullscreen();
+            hideKeyboard(); // Закрытие клавиатуры при закрытии модального окна
         }
 
         function downloadPDF() {
