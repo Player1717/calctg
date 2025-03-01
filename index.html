@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кредитный калькулятор</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 12px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 12px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 20px;
+            border-radius: 0;
+            max-height: none;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 10px;
+        }
+
+        .schedule-table th, .schedule-table td {
+            padding: 6px; /* Уменьшен padding для ещё большей компактности */
+            border: 1px solid #ddd;
+            text-align: right;
+            font-size: 10px; /* Убедимся, что шрифт таблицы одинаков */
+        }
+
+        .schedule-table th {
+            background: #f8f9fa;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-buttons button {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 12px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="cash">Кредит наличными</div>
+            <div class="tab" data-tab="auto">Автокредит</div>
+            <div class="tab" data-tab="mortgage">Ипотека</div>
+        </div>
+        
+        <div class="content">
+            <!-- Кредит наличными -->
+            <div class="tab-content active" id="cash">
+                <div class="form-group">
+                    <label>Сумма кредита (₽):</label>
+                    <input type="number" id="cash-amount" min="10000" max="5000000" value="100000">
+                </div>
+                <div class="form-group">
+                    <label>Срок (месяцев):</label>
+                    <input type="number" id="cash-term" min="1" max="60" value="12">
+                </div>
+                <div class="form-group">
+                    <label>Процентная ставка (%):</label>
+                    <input type="number" id="cash-rate" min="1" max="30" step="0.1" value="12">
+                </div>
+                <button onclick="calculateCash()">Рассчитать</button>
+            </div>
+
+            <!-- Автокредит -->
+            <div class="tab-content" id="auto">
+                <div class="form-group">
+                    <label>Стоимость автомобиля (₽):</label>
+                    <input type="number" id="auto-amount" min="100000" max="10000000" value="1000000">
+                </div>
+                <div class="form-group">
+                    <label>Первоначальный взнос (₽):</label>
+                    <input type="number" id="auto-down" min="0" max="9000000" value="200000">
+                </div>
+                <div class="form-group">
+                    <label>Срок (месяцев):</label>
+                    <input type="number" id="auto-term" min="1" max="84" value="36">
+                </div>
+                <div class="form-group">
+                    <label>Процентная ставка (%):</label>
+                    <input type="number" id="auto-rate" min="1" max="20" step="0.1" value="9">
+                </div>
+                <button onclick="calculateAuto()">Рассчитать</button>
+            </div>
+
+            <!-- Ипотека -->
+            <div class="tab-content" id="mortgage">
+                <div class="form-group">
+                    <label>Стоимость недвижимости (₽):</label>
+                    <input type="number" id="mortgage-amount" min="500000" max="50000000" value="5000000">
+                </div>
+                <div class="form-group">
+                    <label>Первоначальный взнос (₽):</label>
+                    <input type="number" id="mortgage-down" min="100000" max="45000000" value="1000000">
+                </div>
+                <div class="form-group">
+                    <label>Срок (лет):</label>
+                    <input type="number" id="mortgage-term" min="1" max="30" value="15">
+                </div>
+                <div class="form-group">
+                    <label>Процентная ставка (%):</label>
+                    <input type="number" id="mortgage-rate" min="1" max="15" step="0.1" value="7">
+                </div>
+                <button onclick="calculateMortgage()">Рассчитать</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="schedule-modal">
+        <div class="modal-content" id="modal-content">
+            <h2 id="modal-title"></h2>
+            <div id="modal-info"></div>
+            <table class="schedule-table" id="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Месяц</th>
+                        <th>Платеж</th>
+                        <th>Основной долг</th>
+                        <th>Проценты</th>
+                        <th>Остаток</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-body"></tbody>
+            </table>
+            <div class="modal-buttons">
+                <button onclick="downloadPDF()">Скачать PDF</button>
+                <button onclick="closeModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Переключение вкладок
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        function calculateSchedule(loanAmount, rate, termMonths) {
+            const monthlyRate = rate / 100 / 12;
+            let balance = loanAmount;
+            const schedule = [];
+            let totalInterest = 0;
+
+            for (let month = 1; month <= termMonths; month++) {
+                const interest = balance * monthlyRate;
+                const principal = (month === termMonths) ? (balance + interest) : Math.min(
+                    calculatePayment(loanAmount, rate, termMonths) - interest,
+                    balance
+                );
+                balance = Math.max(0, balance - principal);
+                totalInterest += interest;
+
+                schedule.push({
+                    month,
+                    payment: principal + interest,
+                    principal,
+                    interest,
+                    balance
+                });
+            }
+
+            return { schedule, totalInterest };
+        }
+
+        function calculatePayment(amount, rate, term) {
+            const monthlyRate = rate / 100 / 12;
+            return amount * (monthlyRate * Math.pow(1 + monthlyRate, term)) / 
+                   (Math.pow(1 + monthlyRate, term) - 1);
+        }
+
+        function showSchedule(title, loanAmount, rate, termMonths, downPayment = 0) {
+            const { schedule, totalInterest } = calculateSchedule(loanAmount, rate, termMonths);
+            const totalPayment = loanAmount + totalInterest;
+            const overpayment = totalInterest;
+
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-info').innerHTML = `
+                <p>Сумма кредита: ${loanAmount.toLocaleString('ru-RU')} ₽</p>
+                ${downPayment ? `<p>Первоначальный взнос: ${downPayment.toLocaleString('ru-RU')} ₽</p>` : ''}
+                <p>Ставка: ${rate}%</p>
+                <p>Переплата: ${overpayment.toLocaleString('ru-RU', {maximumFractionDigits: 2})} ₽</p>
+            `;
+
+            const tbody = document.getElementById('schedule-body');
+            tbody.innerHTML = '';
+            schedule.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.month}</td>
+                    <td>${row.payment.toLocaleString('ru-RU', {maximumFractionDigits: 2})} ₽</td>
+                    <td>${row.principal.toLocaleString('ru-RU', {maximumFractionDigits: 2})} ₽</td>
+                    <td>${row.interest.toLocaleString('ru-RU', {maximumFractionDigits: 2})} ₽</td>
+                    <td>${row.balance.toLocaleString('ru-RU', {maximumFractionDigits: 2})} ₽</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('schedule-modal').style.display = 'block';
+        }
+
+        function calculateCash() {
+            const amount = parseFloat(document.getElementById('cash-amount').value);
+            const term = parseInt(document.getElementById('cash-term').value);
+            const rate = parseFloat(document.getElementById('cash-rate').value);
+            showSchedule('График платежей - Кредит наличными', amount, rate, term);
+        }
+
+        function calculateAuto() {
+            const amount = parseFloat(document.getElementById('auto-amount').value);
+            const downPayment = parseFloat(document.getElementById('auto-down').value);
+            const term = parseInt(document.getElementById('auto-term').value);
+            const rate = parseFloat(document.getElementById('auto-rate').value);
+            const loanAmount = amount - downPayment;
+            showSchedule('График платежей - Автокредит', loanAmount, rate, term, downPayment);
+        }
+
+        function calculateMortgage() {
+            const amount = parseFloat(document.getElementById('mortgage-amount').value);
+            const downPayment = parseFloat(document.getElementById('mortgage-down').value);
+            const term = parseInt(document.getElementById('mortgage-term').value) * 12;
+            const rate = parseFloat(document.getElementById('mortgage-rate').value);
+            const loanAmount = amount - downPayment;
+            showSchedule('График платежей - Ипотека', loanAmount, rate, term, downPayment);
+        }
+
+        function closeModal() {
+            document.getElementById('schedule-modal').style.display = 'none';
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('modal-content');
+            const opt = {
+                margin: 1,
+                filename: 'credit_schedule.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
