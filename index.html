@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кредитный калькулятор</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Telegram SDK -->
     <style>
         * {
             margin: 0;
@@ -133,10 +134,10 @@
         }
 
         .schedule-table th, .schedule-table td {
-            padding: 6px; /* Уменьшен padding для ещё большей компактности */
+            padding: 6px;
             border: 1px solid #ddd;
             text-align: right;
-            font-size: 10px; /* Убедимся, что шрифт таблицы одинаков */
+            font-size: 10px;
         }
 
         .schedule-table th {
@@ -271,6 +272,12 @@
             });
         });
 
+        // Инициализация Telegram WebApp
+        const telegram = window.Telegram.WebApp;
+        telegram.ready();
+        telegram.expand(); // Расширение до максимальной высоты
+        telegram.requestFullscreen(); // Включение полноэкранного режима
+
         function calculateSchedule(loanAmount, rate, termMonths) {
             const monthlyRate = rate / 100 / 12;
             let balance = loanAmount;
@@ -361,6 +368,7 @@
 
         function closeModal() {
             document.getElementById('schedule-modal').style.display = 'none';
+            telegram.exitFullscreen(); // Выход из полноэкранного режима
         }
 
         function downloadPDF() {
