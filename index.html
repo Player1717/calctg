@@ -21,9 +21,9 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            -webkit-user-select: none; /* Отключение выделения текста для лучшего UX */
+            -webkit-user-select: none;
             user-select: none;
-            touch-action: manipulation; /* Улучшение обработки касаний */
+            touch-action: manipulation;
         }
 
         .calculator-container {
@@ -88,7 +88,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 12px;
-            -webkit-appearance: none; /* Удаление стилизации для мобильных устройств */
+            -webkit-appearance: none;
             appearance: none;
         }
 
@@ -126,7 +126,6 @@
             margin: 0;
             padding: 20px;
             border-radius: 0;
-            max-height: none;
             overflow-y: auto;
             font-size: 12px;
         }
@@ -274,7 +273,7 @@
                 
                 this.classList.add('active');
                 document.getElementById(this.dataset.tab).classList.add('active');
-                hideKeyboard(); // Закрытие клавиатуры при переключении вкладок
+                hideKeyboard();
             });
         });
 
@@ -282,25 +281,25 @@
         const telegram = window.Telegram.WebApp;
         telegram.ready();
         telegram.expand();
-        telegram.requestFullscreen();
+        telegram.enableVerticalSwipes(false);
 
         // Закрытие клавиатуры
         function hideKeyboard() {
-            document.activeElement.blur(); // Убирает фокус с активного элемента
+            document.activeElement.blur();
         }
 
         // Обработчик кликов по экрану
         document.addEventListener('click', function(event) {
             const isInput = event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA';
             if (!isInput) {
-                hideKeyboard(); // Закрыть клавиатуру при клике вне полей ввода
+                hideKeyboard();
             }
         });
 
         // Обработчик клавиши Enter
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                hideKeyboard(); // Закрыть клавиатуру при нажатии Enter
+                hideKeyboard();
             }
         });
 
@@ -310,19 +309,18 @@
             const schedule = [];
             let totalInterest = 0;
 
+            const monthlyPayment = calculatePayment(loanAmount, rate, termMonths);
+
             for (let month = 1; month <= termMonths; month++) {
                 const interest = balance * monthlyRate;
-                const principal = (month === termMonths) ? (balance + interest) : Math.min(
-                    calculatePayment(loanAmount, rate, termMonths) - interest,
-                    balance
-                );
+                const principal = monthlyPayment - interest;
                 balance = Math.max(0, balance - principal);
                 totalInterest += interest;
 
                 schedule.push({
                     month,
-                    payment: principal + interest,
-                    principal,
+                    payment: monthlyPayment,
+                    principal: principal > balance + principal ? balance : principal,
                     interest,
                     balance
                 });
@@ -339,7 +337,6 @@
 
         function showSchedule(title, loanAmount, rate, termMonths, downPayment = 0) {
             const { schedule, totalInterest } = calculateSchedule(loanAmount, rate, termMonths);
-            const totalPayment = loanAmount + totalInterest;
             const overpayment = totalInterest;
 
             document.getElementById('modal-title').textContent = title;
@@ -365,7 +362,7 @@
             });
 
             document.getElementById('schedule-modal').style.display = 'block';
-            hideKeyboard(); // Закрытие клавиатуры при открытии модального окна
+            hideKeyboard();
         }
 
         function calculateCash() {
@@ -396,7 +393,7 @@
         function closeModal() {
             document.getElementById('schedule-modal').style.display = 'none';
             telegram.exitFullscreen();
-            hideKeyboard(); // Закрытие клавиатуры при закрытии модального окна
+            hideKeyboard();
         }
 
         function downloadPDF() {
