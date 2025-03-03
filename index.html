@@ -239,13 +239,18 @@
 
     <div class="modal" id="schedule-modal">
         <div class="modal-content" id="modal-content">
-            <h2 id="modal-title"></h2>
-			<div class="modal-buttons">
-                <button onclick="downloadPDF()">Скачать PDF</button>
-                <button onclick="closeModal()">Закрыть</button>
+            <div class="modal-header">
+                <h2 id="modal-title">График платежей - Кредит наличными</h2>
+                <div class="modal-buttons">
+                    <button onclick="downloadPDF()">Скачать PDF</button>
+                    <button onclick="closeModal()">Закрыть</button>
+                </div>
             </div>
-			</div>
-            <div id="modal-info"></div>
+            <div id="modal-info">
+                <p>Сумма кредита: 100 000 ₽</p>
+                <p>Ставка: 12%</p>
+                <p>Переплата: 6 618,55 ₽</p>
+            </div>
             <table class="schedule-table" id="schedule-table">
                 <thead>
                     <tr>
@@ -253,7 +258,6 @@
                         <th>Платеж</th>
                         <th>Основной долг</th>
                         <th>Проценты</th>
-                        <th>Остаток</th>
                     </tr>
                 </thead>
                 <tbody id="schedule-body"></tbody>
